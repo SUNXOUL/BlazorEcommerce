@@ -1,0 +1,50 @@
+﻿@using Ecommerce.Shared
+@inject IProductService ProductService
+
+@if (ProductService.Productos == null || ProductService.Productos.Count == 0 )
+{
+    <span>Buscando Productos ...</span>
+}
+else
+{
+    @inject HttpClient Http
+        @foreach (var item in ProductService.Productos.ToList())
+        {
+            
+            <div style="padding: 20px;">
+                <RadzenCard  Style="max-width: 420px display:flex;" >
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" Gap="1rem" Class="rz-p-4">
+                        <RadzenImage Path="@item.ImgUrl" Style="width: 100px; height: 100px; border-radius: 50%;" />
+                        <RadzenStack Gap="0">
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-2 rz-my-0">Producto @item.ID</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@item.Nombre</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-display-flex rz-mt-4 rz-mb-0">Descripcion</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@item.Descripcion</b></RadzenText>
+                        </RadzenStack>
+                    </RadzenStack>
+                    <RadzenCard class="rz-background-color-primary-lighter rz-shadow-0 rz-border-radius-0 rz-p-8" style="margin: 1rem calc(-1 * var(--rz-card-padding));">
+                        <RadzenText TextStyle="TextStyle.H6" class="rz-color-primary-light"><strong>informacion de compra</strong></RadzenText>
+                        <RadzenRow RowGap="0">
+                            <RadzenColumn SizeSM="4">
+                                <RadzenText TextStyle="TextStyle.Overline" class="rz-color-primary-light rz-display-flex rz-mt-4 rz-mb-0">Precio</RadzenText>
+                                <RadzenText TextStyle="TextStyle.Body1"><b>@item.Precio</b></RadzenText>
+                            </RadzenColumn>
+                        </RadzenRow>
+                    </RadzenCard>
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0">
+                    <RadzenLink Path=@($"ProductoDetalle/{item.ID}")> <RadzenButton Variant="Variant.Text" class="rz-text-secondary-color" Text="Ver producto" /></RadzenLink>
+                        <RadzenButton Variant="Variant.Text" Text="Agregar al Carro" />
+                    </RadzenStack>
+                </RadzenCard>
+            </div>
+        }
+}
+
+@code{
+    public List<Producto> Lista { get; set; }
+
+    protected override async Task  OnInitializedAsync()
+    {
+        await ProductService.GetProductos();   
+    }
+}
