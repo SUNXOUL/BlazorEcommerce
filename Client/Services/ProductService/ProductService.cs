@@ -15,7 +15,7 @@ namespace Ecommerce.Client.Services.ProductService
             this._http = http;
         }
 
-        public List<Producto> Productos { get; set; }
+        public List<Producto> Productos { get; set; } = new List<Producto>();
 
         public async Task GetProductos()
         {
@@ -23,6 +23,19 @@ namespace Ecommerce.Client.Services.ProductService
             if (resultado != null && resultado.Data != null)
             {
                 Productos = resultado.Data;
+            }
+            else
+            {
+                Console.WriteLine("NoFoundList");
+            }
+        }
+        public async Task GetProductos(int ID)
+        {
+            var resultado = await _http.GetFromJsonAsync<ServiceResponse<List<Producto>>>("api/Producto");
+
+            if (resultado != null && resultado.Data != null)
+            {
+                Productos = resultado.Data.Where(p=>p.CategoriaID==ID).ToList();
             }
             else
             {

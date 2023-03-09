@@ -6,6 +6,7 @@ namespace Ecommerce.Client.Services.ProductService
     {
         List<Producto> Productos { get; set; }
         Task GetProductos();
+        Task GetProductos(int ID);
         Task<ServiceResponse<Producto>> GetProducto(int ID);
     }
 }

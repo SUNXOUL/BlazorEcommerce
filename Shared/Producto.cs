@@ -10,9 +10,7 @@ namespace Ecommerce.Shared
         public string Descripcion { get; set; }
         public string ImgUrl { get; set; }
         public Decimal Precio { get; set; }
-
         public Category Categoria { get; set; }
-
         public int CategoriaID { get; set; }
 
         public Producto()

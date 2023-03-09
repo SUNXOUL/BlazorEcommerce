@@ -3,12 +3,13 @@
 
 @if (ProductService.Productos == null || ProductService.Productos.Count == 0 )
 {
-    <span>Buscando Productos ...</span>
+    <span>Buscando Productos ... </span>
 }
 else
 {
+    <span>@Cantidad encontrados</span>
     @inject HttpClient Http
-        @foreach (var item in ProductService.Productos.ToList())
+        @foreach (var item in ProductService.Productos)
         {
             
             <div style="padding: 20px;">
@@ -28,6 +29,8 @@ else
                             <RadzenColumn SizeSM="4">
                                 <RadzenText TextStyle="TextStyle.Overline" class="rz-color-primary-light rz-display-flex rz-mt-4 rz-mb-0">Precio</RadzenText>
                                 <RadzenText TextStyle="TextStyle.Body1"><b>@item.Precio</b></RadzenText>
+                            <RadzenText TextStyle="TextStyle.Overline" class="rz-color-primary-light rz-display-flex rz-mt-4 rz-mb-0">Categoria</RadzenText>
+                            <RadzenText TextStyle="TextStyle.Body1"><b>@item.CategoriaID</b></RadzenText>
                             </RadzenColumn>
                         </RadzenRow>
                     </RadzenCard>
@@ -41,10 +44,23 @@ else
 }
 
 @code{
-    public List<Producto> Lista { get; set; }
+    [Parameter]
+    public int IDCategory { get; set; }
+
+    public int Cantidad { get; set; }
 
     protected override async Task  OnInitializedAsync()
     {
-        await ProductService.GetProductos();   
+        if (IDCategory >0)
+        {
+            await ProductService.GetProductos(IDCategory);
+        }
+        else
+        {
+            await ProductService.GetProductos();
+        }
+
+        Cantidad = ProductService.Productos.Count;
+
     }
 }

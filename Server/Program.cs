@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore;
 using Ecommerce.Server.DAL;
 using Ecommerce.Server.Services.ProductService;
+using Ecommerce.Server.Services.CategoryService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
+
 var app = builder.Build();
 
 app.UseSwaggerUI();

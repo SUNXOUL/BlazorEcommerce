@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@inject ICategoryService CategoryService
+@inject IProductService ProductService
+@inherits LayoutComponentBase
 
 <RadzenLayout Style="height: 300px; height: 100vh; width:100vw; grid-template-areas: 'rz-sidebar rz-header' 'rz-sidebar rz-body'">
     <RadzenHeader>
@@ -9,11 +11,17 @@
     </RadzenHeader>
     <RadzenSidebar @bind-Expanded="@sidebar2Expanded">
         <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home" />
-            <RadzenPanelMenuItem Text="Users" Icon="account_box" />
+
+            <RadzenPanelMenuItem Text="Home" Icon="home" Path="/"  />
+
+            @foreach(var cat in CategoryService.Categorias)
+            {
+
+                <RadzenPanelMenuItem Text=@cat.Nombre Icon="home" Path=@($"/{cat.CategoryID}")  />
+            }
         </RadzenPanelMenu>
         <div class="rz-p-4">
-            Sidebar
+            
         </div>
     </RadzenSidebar>
     <RadzenBody >
@@ -25,4 +33,12 @@
 
 @code {
     bool sidebar2Expanded = true;
+
+    protected override async Task  OnInitializedAsync()
+    {
+        await CategoryService.GetCategorys();
+    }
+
+
+
 }
